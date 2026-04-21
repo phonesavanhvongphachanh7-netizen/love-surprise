@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Special One ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+Lao:wght@400;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Lao', sans-serif;
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            overflow-x: hidden;
+        }
+        .romantic-font { font-family: 'Dancing Script', cursive; }
+        
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Floating Animation for Hearts */
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        .heart {
+            position: fixed;
+            color: #ff85a2;
+            pointer-events: none;
+            z-index: 0;
+            animation: float linear infinite;
+        }
+
+        /* Smooth Hover for Buttons */
+        .btn-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-hover:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 133, 162, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div id="heart-container"></div>
+
+    <main class="glass-card relative z-10 w-full max-w-lg p-10 rounded-[40px] text-center">
+        <div class="mb-6 flex justify-center">
+            <div class="p-4 bg-white rounded-full shadow-inner">
+                <i data-lucide="heart" class="w-12 h-12 text-pink-500 fill-pink-500 animate-pulse"></i>
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-800 mb-4 tracking-tight">
+            ຕັ້ງແຕ່ຮູ້ຈັກກັນມາ...
+        </h1>
+        <p class="text-gray-600 text-lg mb-10 leading-relaxed">
+            ເຈົ້າຮູ້ສຶກດີກັບເຮົາບໍ່? <br>
+            <span class="text-sm italic text-gray-400">(ເຮົາຢາກບອກວ່າ ເຮົາມີຄວາມສຸກຫຼາຍເດີ້ທີ່ມີເຈົ້າ)</span>
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button id="yesBtn" class="btn-hover w-full sm:w-auto px-10 py-4 bg-pink-500 text-white font-bold rounded-2xl shadow-lg flex items-center justify-center gap-2">
+                ຮູ້ສຶກດີຫຼາຍ ❤️
+            </button>
+            
+            <button id="noBtn" class="btn-hover w-full sm:w-auto px-8 py-4 bg-gray-100 text-gray-500 font-medium rounded-2xl border border-gray-200">
+                ບໍ່ຮູ້ສຶກຫຍັງ 🙄
+            </button>
+        </div>
+
+        <div id="successMessage" class="hidden mt-8 p-6 bg-pink-50 rounded-2xl border border-pink-100">
+            <p class="romantic-font text-3xl text-pink-600 mb-2">I Love You So Much!</p>
+            <p class="text-gray-600">ຂອບໃຈເດີ້ທີ່ເຂົ້າມາເປັນຄວາມສຸກໃຫ້ເຮົາ</p>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const successMessage = document.getElementById('successMessage');
+        let noClickCount = 0;
+
+        // "No" Button behavior
+        noBtn.addEventListener('mouseover', () => {
+            if (window.innerWidth > 640) { // Only move on desktop
+                const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+                const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = `${x}px`;
+                noBtn.style.top = `${y}px`;
+            }
+        });
+
+        noBtn.addEventListener('click', () => {
+            noClickCount++;
+            noBtn.style.transform = `scale(${1 - noClickCount * 0.1})`;
+            if(noClickCount >= 5) {
+                noBtn.innerText = "ກົດບໍ່ໄດ້ແລ້ວ 😜";
+                noBtn.disabled = true;
+                noBtn.style.opacity = "0.5";
+            }
+        });
+
+        // "Yes" Button behavior
+        yesBtn.addEventListener('click', () => {
+            successMessage.classList.remove('hidden');
+            yesBtn.classList.add('hidden');
+            noBtn.classList.add('hidden');
+            createCelebration();
+        });
+
+        // Background Hearts Animation
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            document.getElementById('heart-container').appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 300);
+
+        function createCelebration() {
+            for(let i=0; i<50; i++) {
+                setTimeout(createHeart, i * 50);
+            }
+        }
+    </script>
+</body>
+</html>
